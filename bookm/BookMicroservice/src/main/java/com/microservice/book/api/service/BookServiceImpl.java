@@ -15,66 +15,69 @@ import com.microservice.commons.entity.BookEntity;
 import com.microservice.book.api.repository.BookJpaRepository;
 
 
-@Service("movieService")
+@Service("bookService")
 public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private BookJpaRepository repository;
 	
 	@Override
-	public BookDTO insert(BookDTO movie) {
+	public BookDTO insert(BookDTO book) {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
-		BookEntity bookEntity = modelMapper.map(movie, BookEntity.class);
+		BookEntity bookEntity = modelMapper.map(book, BookEntity.class);
 		
 		bookEntity.setId(UUID.randomUUID().toString());
 		
 		bookEntity = repository.save(bookEntity);
 		
-		movie = modelMapper.map(movie, BookDTO.class);
+		book = modelMapper.map(book, BookDTO.class);
 		
-		return movie;
+		return book;
 	}
 	
 	@Override
-	public BookDTO update(BookDTO movie) {
+	public BookDTO update(BookDTO book) {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
-		BookEntity bookEntity = modelMapper.map(movie, BookEntity.class);
+		BookEntity bookEntity = modelMapper.map(book, BookEntity.class);
 		
 		bookEntity = repository.save(bookEntity);
+
+
+		book = modelMapper.map(book, BookDTO.class);
 		
-		movie = modelMapper.map(movie, BookDTO.class);
-		
-		return movie;
+		return book;
 	}
 
 	@Override
 	public BookDTO findById(String id) {
-		BookEntity movie = repository.findById(id).orElse(null);
+		BookEntity book = repository.findById(id).orElse(null);
 		
-		if(movie == null)
+		if(book == null)
+
 			return null;
 		
-		BookDTO bookDTO = new ModelMapper().map(movie, BookDTO.class);
+		BookDTO bookDTO = new ModelMapper().map(book, BookDTO.class);
 		
 		return bookDTO;
 	}
 	
 	@Override
 	public List<BookDTO> getAll() {
-		ArrayList<BookEntity> movies = (ArrayList<BookEntity>) repository.findAll();
+		ArrayList<BookEntity> books = (ArrayList<BookEntity>) repository.findAll();
 		
 		ModelMapper modelMapper = new ModelMapper();
 		
-		List<BookDTO> moviesDTO = movies
+		List<BookDTO> bookDTOS = books
 				  .stream()
-				  .map(movie -> modelMapper.map(movie, BookDTO.class))
+				  .map(book -> modelMapper.map(book, BookDTO.class))
 				  .collect(Collectors.toList());
 		
-		return moviesDTO;
+		return bookDTOS;
+
 	}
 
 	@Override

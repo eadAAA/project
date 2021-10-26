@@ -38,13 +38,13 @@ public class BookController {
 
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<BookDTO> insert(@Valid @RequestBody BookCreateRequestModel movieRequest) {
+	public ResponseEntity<BookDTO> insert(@Valid @RequestBody BookCreateRequestModel bookRequest) {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		BookDTO bookDTO = modelMapper.map(movieRequest, BookDTO.class);
+		BookDTO bookDTO = modelMapper.map(bookRequest, BookDTO.class);
 		
 		CategoryDTO categoryDTO = new CategoryDTO();
-		categoryDTO.setId(movieRequest.getCategoryId());
+		categoryDTO.setId(bookRequest.getCategoryId());
 		bookDTO.setCategory(categoryDTO);
 		
 		bookDTO = service.insert(bookDTO);
@@ -62,22 +62,22 @@ public class BookController {
 
 	@GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<List<BookDTO>> getAll() {
-		List<BookDTO> movies = service.getAll();
-		return ResponseEntity.status(HttpStatus.OK).body(movies);
+		List<BookDTO> book = service.getAll();
+		return ResponseEntity.status(HttpStatus.OK).body(book);
 	}
 
 	@PutMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<BookDTO> update(@Valid @RequestBody BookUpdateRequestModel movieRequest) {
-		if(service.findById(movieRequest.getId()) == null)
+	public ResponseEntity<BookDTO> update(@Valid @RequestBody BookUpdateRequestModel bookRequest) {
+		if(service.findById(bookRequest.getId()) == null)
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		BookDTO bookDTO = modelMapper.map(movieRequest, BookDTO.class);
+		BookDTO bookDTO = modelMapper.map(bookRequest, BookDTO.class);
 		
 		CategoryDTO categoryDTO = new CategoryDTO();
-		categoryDTO.setId(movieRequest.getCategoryId());
+		categoryDTO.setId(bookRequest.getCategoryId());
 		bookDTO.setCategory(categoryDTO);
 		
 		bookDTO = service.update(bookDTO);
