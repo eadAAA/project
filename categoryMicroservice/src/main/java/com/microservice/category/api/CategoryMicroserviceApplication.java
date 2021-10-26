@@ -9,16 +9,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EntityScan(basePackages = "com.soares.microservice.commons.entity")
+@EnableHystrixDashboard
+@EnableCircuitBreaker
 public class CategoryMicroserviceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CategoryMicroserviceApplication.class, args);
 	}
-	
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+
 
 }
