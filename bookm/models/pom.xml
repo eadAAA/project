@@ -15,7 +15,7 @@
 	</properties>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<!-- https://mvnrepository.com/artifact/junit/junitdddd -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
