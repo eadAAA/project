@@ -2,70 +2,51 @@ package com.microservice.commons.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-/**
- * Data Transfer Object for Movie
- * 
- * @author Marcelo Soares <marceloh.web@gmail.com>
- *
- */
 public class BookDTO {
 	
-	/**
-	 * Primary key
-	 */
+
 	private String id;
 	
-	/**
-	 * Movie title
-	 */
+
 	private String title;
 
-	/**
-	 * Category
-	 */
-	@JsonBackReference
-	private CategoryDTO category;
 
-	/**
-	 * @return the id
-	 */
+	@JsonBackReference
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setIsbn(int isbn) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * @param title the title to set
-	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	/**
-	 * @return the category
-	 */
-	public CategoryDTO getCategory() {
-		return category;
+	public boolean equals(final Object o) {
+		if (o == this) return true;
+		if (!(o instanceof BookDTO)) return false;
+		final BookDTO other = (BookDTO) o;
+		if (!other.canEqual((Object) this)) return false;
+		if (this.getId() != other.getId()) return false;
+		final Object this$name = this.getTitle();
+		final Object other$name = other.getTitle();
+		if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
+		return true;
 	}
 
-	/**
-	 * @param category the category to set
-	 */
-	public void setCategory(CategoryDTO category) {
-		this.category = category;
+	protected boolean canEqual(final Object other) {
+		return other instanceof BookDTO;
+	}
+
+
+	public String toString() {
+		return "BookDTO(isbn=" + this.getId() + ", name=" + this.getTitle() + ", description=" + ")";
 	}
 
 }
