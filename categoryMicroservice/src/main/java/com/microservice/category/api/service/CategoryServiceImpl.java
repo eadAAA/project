@@ -14,12 +14,6 @@ import com.microservice.category.api.repository.ICategoryJpaRepository;
 import com.microservice.commons.dto.CategoryDTO;
 import com.microservice.commons.entity.CategoryEntity;
 
-/**
- * Category service interface implementation
- * 
- * @author Marcelo Soares <marceloh.web@gmail.com>
- *
- */
 @Service("categoryService")
 public class CategoryServiceImpl implements ICategoryService {
 
