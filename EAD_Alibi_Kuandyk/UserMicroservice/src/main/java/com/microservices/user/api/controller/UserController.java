@@ -24,6 +24,48 @@ public class UserController {
 
 	@Autowired
 	private IUserService service;
+	
+	@RestController
+	public class UsersServiceController {
+
+	private static Map<String, List<Users>> map = new HashMap<>();
+
+	    static {
+		map = new HashMap<>();
+
+		List<Users> list = new ArrayList();
+		Users users = new Users("Ben Fisk", 40);
+		list.add(users);
+		users = new Users("Nikolas Cage", 42);
+		list.add(users);
+
+		map.put("coolman", list);
+
+		list = new ArrayList();
+		users = new Users("James Smith", 43);
+		list.add(users);
+		users = new Users("John Winston", 41);
+		list.add(users);
+
+		map.put("badboy", list);
+
+	    }
+
+	    @RequestMapping(value = "/getUsersDetailsByGroup/{group}", method = RequestMethod.GET)
+	    public List<Users> getUsers(@PathVariable String group) {
+		List<Users> usersList = map.get(group);
+
+		if (usersList == null || usersList.isEmpty()) {
+		    usersList = new ArrayList<>();
+		    Users users = new Users("Users not found", null);
+		    usersList.add(users);
+		}
+
+		return usersList;
+	    }
+
+}
+
 
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
