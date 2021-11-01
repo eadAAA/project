@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Profile</title>
+</head>
+<body>
+<table style="margin: auto">
+    <tr>
+        <td>
+            <a th:href="${toAuthorisation}" style="border: solid 1px blue; padding: 3px">Авторизация</a>
+            <a th:href="${toCatalog}" style="border: solid 1px blue; padding: 3px">Каталог</a>
+            <a th:href="${toProfile}" style="border: solid 1px blue; padding: 3px">Профиль</a>
+            <a th:href="${toPay}" style="border: solid 1px blue; padding: 3px">Оплата</a>
+            <a th:href="${toSubscription}" style="border: solid 1px blue; padding: 3px">Подписка</a>
+            <a th:href="${toPenalties}" style="border: solid 1px blue; padding: 3px">Штрафы</a>
+        </td>
+    </tr>
+</table>
+<div style="margin: auto">
+    <span>Пользовательский id:</span>
+    <span th:text="${userId}"></span>
+</div>
+<div style="margin: auto">
+    <span>Полное имя пользователя:</span>
+    <span th:text="${fullName}"></span>
+</div>
+<div style="margin: auto">
+    <span>Адрес:</span>
+    <span th:text="${address}"></span>
+</div>
+<br>
+<h2 style="margin: auto">Книги на руках:</h2>
+<div style="margin: auto" th:each="book : ${booksList}">
+    <form action="returnBook" method="post">
+        <span th:text="${book.name}">Какая-то не прогрузившаяся книга</span>
+        <input name="bookId" type="hidden" th:value="${book.id}">
+        <button type="submit">Сдать книгу</button>
+    </form>
+</div>
+</body>
+</html>
