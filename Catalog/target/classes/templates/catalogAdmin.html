@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <title>Catalog</title>
+</head>
+<body>
+
+<table style="margin: auto">
+    <tr>
+        <td>
+            <a th:href="${toAuthorisation}" style="border: solid 1px blue; padding: 3px">Авторизация</a>
+            <a th:href="${toCatalog}" style="border: solid 1px blue; padding: 3px">Каталог</a>
+            <a th:href="${toProfile}" style="border: solid 1px blue; padding: 3px">Профиль</a>
+            <a th:href="${toPay}" style="border: solid 1px blue; padding: 3px">Оплата</a>
+            <a th:href="${toSubscription}" style="border: solid 1px blue; padding: 3px">Подписка</a>
+            <a th:href="${toPenalties}" style="border: solid 1px blue; padding: 3px">Штрафы</a>
+        </td>
+    </tr>
+</table>
+
+<h2>Добавление книги:</h2>
+<form action="addbook" method="post">
+    <input name="name" placeholder="Имя книги"/>
+    <input name="author" placeholder="Автор книги"/>
+    <button type="submit">Добавить книгу</button>
+</form>
+
+<h2>Каталог библиотеки:</h2>
+<div th:each="book : ${booksList}" style="border: solid 1px blue; padding: 5px">
+    <form action="editbook" method="post">
+
+        <input name="name" th:placeholder="${book.name}"/>
+        <input name="author" th:placeholder="${book.author}"/>
+
+        <input name="bookId" type="hidden" th:value="${book.id}">
+        <button type="submit">Редактировать книгу</button>
+    </form>
+    <form action="deletebook" method="post">
+        <input name="bookId" type="hidden" th:value="${book.id}">
+        <button type="submit">Удалить книгу</button>
+    </form>
+</div>
+</body>
+</html>
