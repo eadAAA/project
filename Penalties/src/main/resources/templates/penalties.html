@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Penalties</title>
+</head>
+<body>
+<table style="margin: auto">
+    <tr>
+        <td>
+            <a th:href="${toAuthorisation}" style="border: solid 1px blue; padding: 3px">Авторизация</a>
+            <a th:href="${toCatalog}" style="border: solid 1px blue; padding: 3px">Каталог</a>
+            <a th:href="${toProfile}" style="border: solid 1px blue; padding: 3px">Профиль</a>
+            <a th:href="${toPay}" style="border: solid 1px blue; padding: 3px">Оплата</a>
+            <a th:href="${toSubscription}" style="border: solid 1px blue; padding: 3px">Подписка</a>
+            <a th:href="${toPenalties}" style="border: solid 1px blue; padding: 3px">Штрафы</a>
+        </td>
+    </tr>
+</table>
+<h2>Ваши штрафы:</h2>
+<div th:each="book : ${booksList}">
+    <form action="paypenalties" method="post">
+        <span>Имя книги: </span>
+        <span th:text="${book.name}"/>
+        <br>
+        <span>Дата сдачи: </span>
+        <span th:text="${book.endTime}"/>
+        <br>
+        <span>Сумма штрафа: </span>
+        <span th:text="${book.penalty}"/>
+        <input name="bookId" type="hidden" th:value="${book.id}">
+        <input name="penalty" type="hidden" th:value="${book.penalty}">
+        <button type="submit">Оплатить штраф</button>
+    </form>
+</div>
+</body>
+</html>
