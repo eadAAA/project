@@ -17,6 +17,7 @@ public class Users {
     private Long balance;
     private Boolean subscriber;
     private Boolean adminRoot;
+    private String token;
 
     public Users() {
     }
@@ -88,5 +89,13 @@ public class Users {
 
     public void setAdminRoot(Boolean adminRoot) {
         this.adminRoot = adminRoot;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

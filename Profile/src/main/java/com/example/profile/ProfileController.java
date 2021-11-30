@@ -4,16 +4,16 @@ import com.example.profile.models.Books;
 import com.example.profile.models.Users;
 import com.example.profile.repositories.BooksRepository;
 import com.example.profile.repositories.UsersRepository;
+import com.example.profile.tokens.Token;
+import com.example.profile.tokens.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/profile")
@@ -25,8 +25,17 @@ public class ProfileController {
     @Autowired
     private UsersRepository usersRepository;
 
-    @GetMapping("/{id}/")
-    public String profileGet(@PathVariable("id") Long id, Model model) {
+    @Autowired
+    private TokenManager tokenManager;
+
+    @GetMapping("/{token}/")
+    public String profileGet(@PathVariable("token") String token, Model model) {
+
+        if(tokenManager.userIdentify(new Token(token)) == null){
+            return "redirect:http://localhost:8080/authorization/";
+        }
+        long id = new Long(tokenManager.userIdentify(new Token(token)));
+
         List<Books> booksList = booksUsedBy(id);
         Users users = usersRepository.findById(id).get();
         model.addAttribute("userId", id);
@@ -34,20 +43,26 @@ public class ProfileController {
         model.addAttribute("address", users.getAddress());
         model.addAttribute("booksList", booksList);
 
-        addModelAttributes(model, id);
+        addModelAttributes(model, token);
 
         return "profile";
     }
 
-    @PostMapping("/{id}/returnBook")
-    public String returnBook(@PathVariable("id") Long userId, @RequestParam("bookId") Long bookId) {
+    @PostMapping("/{token}/returnBook")
+    public String returnBook(@PathVariable("token") String token, @RequestParam("bookId") Long bookId) {
+
+        if(tokenManager.userIdentify(new Token(token)) == null){
+            return "redirect:http://localhost:8080/authorization/";
+        }
+        long id = new Long(tokenManager.userIdentify(new Token(token)));
+
         try {
             Books book = booksRepository.findById(bookId).get();
             book.setUsedBy(null);
             booksRepository.save(book);
         } catch (Exception e) {
         }
-        return "redirect:/profile/" + userId + "/";
+        return "redirect:http://localhost:8080/profile/" + token + "/";
     }
 
     public List<Books> booksUsedBy(Long id) {
@@ -64,13 +79,13 @@ public class ProfileController {
         return booksList;
     }
 
-    private Model addModelAttributes(Model model, Long userId){
-        model.addAttribute("toAuthorisation", "http://localhost:8081/authorisation/");
-        model.addAttribute("toProfile", "http://localhost:8082/profile/" + userId + "/");
-        model.addAttribute("toCatalog", "http://localhost:8083/catalog/" + userId + "/");
-        model.addAttribute("toSubscription", "http://localhost:8084/subscription/" + userId + "/");
-        model.addAttribute("toPay", "http://localhost:8085/pay/" + userId + "/");
-        model.addAttribute("toPenalties", "http://localhost:8086/penalties/" + userId + "/");
+    private Model addModelAttributes(Model model, String token){
+        model.addAttribute("toAuthorisation", "http://localhost:8080/authorization/");
+        model.addAttribute("toProfile", "http://localhost:8080/profile/" + token + "/");
+        model.addAttribute("toCatalog", "http://localhost:8080/catalog/" + token + "/");
+        model.addAttribute("toSubscription", "http://localhost:8080/subscription/" + token + "/");
+        model.addAttribute("toPay", "http://localhost:8080/pay/" + token + "/");
+        model.addAttribute("toPenalties", "http://localhost:8080/penalties/" + token + "/");
         return model;
     }
 }
