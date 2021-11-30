@@ -4,6 +4,8 @@ import com.example.catalog.models.Books;
 import com.example.catalog.models.Users;
 import com.example.catalog.repositories.BooksRepository;
 import com.example.catalog.repositories.UsersRepository;
+import com.example.catalog.tokens.Token;
+import com.example.catalog.tokens.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +23,17 @@ public class CatalogController {
     @Autowired
     private UsersRepository usersRepository;
 
-    @GetMapping("/{id}/")
-    public String showCatalog(@PathVariable("id") Long userId, Model model) {
+    @Autowired
+    private TokenManager tokenManager;
+
+    @GetMapping("/{token}/")
+    public String showCatalog(@PathVariable("token") String token, Model model) {
+
+        if(tokenManager.userIdentify(new Token(token)) == null){
+            return "redirect:http://localhost:8080/authorization/";
+        }
+        long id = new Long(tokenManager.userIdentify(new Token(token)));
+
         Iterator<Books> booksIterator = booksRepository.findAll().iterator();
         List<Books> booksList = new ArrayList<>();
         while (booksIterator.hasNext()) {
@@ -32,9 +43,9 @@ public class CatalogController {
             }
         }
         model.addAttribute("booksList", booksList);
-        Users user = usersRepository.findById(userId).get();
+        Users user = usersRepository.findById(id).get();
 
-        addModelAttributes(model, userId);
+        addModelAttributes(model, token);
 
         if (user.getAdminRoot() != null) {
             if (user.getAdminRoot()){
@@ -44,9 +55,15 @@ public class CatalogController {
         return "catalog";
     }
 
-    @PostMapping("/{id}/takebook")
-    public String takeBook(@PathVariable("id") Long userId, @RequestParam("bookId") Long bookId) {
-        Users user = usersRepository.findById(userId).get();
+    @PostMapping("/{token}/takebook")
+    public String takeBook(@PathVariable("token") String token, @RequestParam("bookId") Long bookId) {
+
+        if(tokenManager.userIdentify(new Token(token)) == null){
+            return "redirect:http://localhost:8080/authorization/";
+        }
+        long id = new Long(tokenManager.userIdentify(new Token(token)));
+
+        Users user = usersRepository.findById(id).get();
         Books book = booksRepository.findById(bookId).get();
 
         Date dt = new Date();
@@ -56,7 +73,7 @@ public class CatalogController {
         c.add(Calendar.DATE, 30);
         book.setEndTime(c.getTime().getTime());
 
-        book.setUsedBy(userId);
+        book.setUsedBy(id);
         booksRepository.save(book);
         /*
         if(user.getSubscriber() != null){
@@ -68,15 +85,19 @@ public class CatalogController {
         */
 
 
-        return "redirect:/catalog/" + userId + "/";
+        return "redirect:http://localhost:8080/catalog/" + token + "/";
     }
 
-    @PostMapping("/{id}/editbook")
-    public String editBook(@PathVariable("id") Long userId, @RequestParam("bookId") Long bookId, @RequestParam("name") String name, @RequestParam("author") String author) {
+    @PostMapping("/{token}/editbook")
+    public String editBook(@PathVariable("token") String token, @RequestParam("bookId") Long bookId, @RequestParam("name") String name, @RequestParam("author") String author) {
 
-        //нужна проверка личности админа
+        if(tokenManager.userIdentify(new Token(token)) == null){
+            return "redirect:http://localhost:8080/authorization/";
+        }
+        long id = new Long(tokenManager.userIdentify(new Token(token)));
 
-        Users user = usersRepository.findById(userId).get();
+
+        Users user = usersRepository.findById(id).get();
         Books book = booksRepository.findById(bookId).get();
 
         book.setName(name);
@@ -84,41 +105,49 @@ public class CatalogController {
 
         booksRepository.save(book);
 
-        return "redirect:/catalog/" + userId + "/";
+        return "redirect:http://localhost:8080/catalog/" + token + "/";
     }
 
-    @PostMapping("/{id}/deletebook")
-    public String deleteBook(@PathVariable("id") Long userId, @RequestParam("bookId") Long bookId) {
+    @PostMapping("/{token}/deletebook")
+    public String deleteBook(@PathVariable("token") String token, @RequestParam("bookId") Long bookId) {
+
+        if(tokenManager.userIdentify(new Token(token)) == null){
+            return "redirect:http://localhost:8080/authorization/";
+        }
+        long id = new Long(tokenManager.userIdentify(new Token(token)));
 
         //нужна проверка личности админа
 
-        Users user = usersRepository.findById(userId).get();
+        Users user = usersRepository.findById(id).get();
 
         booksRepository.deleteById(bookId);
 
-        return "redirect:/catalog/" + userId + "/";
+        return "redirect:http://localhost:8080/catalog/" + token + "/";
     }
 
-    @PostMapping("/{id}/addbook")
-    public String editBook(@PathVariable("id") Long userId, @RequestParam("name") String name, @RequestParam("author") String author) {
+    @PostMapping("/{token}/addbook")
+    public String editBook(@PathVariable("token") String token, @RequestParam("name") String name, @RequestParam("author") String author) {
 
-        //нужна проверка личности админа
+        if(tokenManager.userIdentify(new Token(token)) == null){
+            return "redirect:http://localhost:8080/authorization/";
+        }
+        long id = new Long(tokenManager.userIdentify(new Token(token)));
 
-        Users user = usersRepository.findById(userId).get();
+        Users user = usersRepository.findById(id).get();
         Books book = new Books(name, author);
 
         booksRepository.save(book);
 
-        return "redirect:/catalog/" + userId + "/";
+        return "redirect:http://localhost:8080/catalog/" + token + "/";
     }
 
-    private Model addModelAttributes(Model model, Long userId){
-        model.addAttribute("toAuthorisation", "http://localhost:8081/authorisation/");
-        model.addAttribute("toProfile", "http://localhost:8082/profile/" + userId + "/");
-        model.addAttribute("toCatalog", "http://localhost:8083/catalog/" + userId + "/");
-        model.addAttribute("toSubscription", "http://localhost:8084/subscription/" + userId + "/");
-        model.addAttribute("toPay", "http://localhost:8085/pay/" + userId + "/");
-        model.addAttribute("toPenalties", "http://localhost:8086/penalties/" + userId + "/");
+    private Model addModelAttributes(Model model, String token){
+        model.addAttribute("toAuthorisation", "http://localhost:8080/authorization/");
+        model.addAttribute("toProfile", "http://localhost:8080/profile/" + token + "/");
+        model.addAttribute("toCatalog", "http://localhost:8080/catalog/" + token + "/");
+        model.addAttribute("toSubscription", "http://localhost:8080/subscription/" + token + "/");
+        model.addAttribute("toPay", "http://localhost:8080/pay/" + token + "/");
+        model.addAttribute("toPenalties", "http://localhost:8080/penalties/" + token + "/");
         return model;
     }
 }
