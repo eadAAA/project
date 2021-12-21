@@ -3,25 +3,74 @@
 <head>
     <meta charset="utf-8">
     <title>SubInfo</title>
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.css"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.js"
+    ></script>
 </head>
 <body>
-<table style="margin: auto">
-    <tr>
-        <td>
-            <a th:href="${toAuthorisation}" style="border: solid 1px blue; padding: 3px">Авторизация</a>
-            <a th:href="${toCatalog}" style="border: solid 1px blue; padding: 3px">Каталог</a>
-            <a th:href="${toProfile}" style="border: solid 1px blue; padding: 3px">Профиль</a>
-            <a th:href="${toPay}" style="border: solid 1px blue; padding: 3px">Оплата</a>
-            <a th:href="${toSubscription}" style="border: solid 1px blue; padding: 3px">Подписка</a>
-            <a th:href="${toPenalties}" style="border: solid 1px blue; padding: 3px">Штрафы</a>
-        </td>
-    </tr>
-</table>
-<h2>Каталог библиотеки:</h2>
-<span>Дата начала подписки: </span>
-<span th:text="${startTime}"></span>
-<br>
-<span>Дата окончания подписки: </span>
-<span th:text="${endTime}"></span>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="${toAuthorisation}">Авторизация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toCatalog}">Каталог</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toProfile}">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toPay}">Оплата</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toSubscription}">Подписка</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toPenalties}">Штрафы</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="alert alert-success" role="alert" style="margin-top: 20px;">
+    <h4 class="alert-heading">Каталог Библиотеки</h4>
+    <span>Дата начала подписки: </span>
+    <span th:text="${startTime}"></span>
+    <br>
+    <span>Дата окончания подписки: </span>
+    <span th:text="${endTime}"></span>
+</div>
 </body>
 </html>
