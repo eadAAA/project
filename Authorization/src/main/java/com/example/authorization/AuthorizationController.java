@@ -1,6 +1,6 @@
 package com.example.authorization;
 
-import com.example.authorization.kafkaProduser.Sender;
+//import com.example.authorization.kafkaProduser.Sender;
 import com.example.authorization.models.Users;
 import com.example.authorization.repositories.UsersRepository;
 import com.example.authorization.tokens.TokenManager;
@@ -21,8 +21,7 @@ public class AuthorizationController {
     private UsersRepository usersRepository;
     @Autowired
     private TokenManager tokenManager;
-    @Autowired
-    private Sender sender;
+//    private Sender sender;
 
     @GetMapping("/")
     public String authorization() {
@@ -36,7 +35,6 @@ public class AuthorizationController {
 
     @PostMapping("/registration")
     public String registrationPost(@RequestParam String login, @RequestParam String password, @RequestParam("fullName") String fullName, @RequestParam("address") String address, Model model) {
-
         Users user = findUserByLogin(login);
         if (user != null) {
             model.addAttribute("message", "Пользователь с таким именем уже есть!");
@@ -51,7 +49,6 @@ public class AuthorizationController {
 
 
             String token = tokenManager.generate(""+user.getId(), 10000000).toString();
-//            sender.sendMessage(user.getId() + ";" + token);
 
             return "redirect:http://localhost:8080/profile/" + token + "/";
         }
