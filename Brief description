@@ -1,1 +1,5 @@
-Our application is a management system for libraries. With it, you can easily manage books by dividing them into categories. Users register and after that they have the opportunity to purchase a subscription to receive books. The system keeps track of users, who took what books when and when to return. It also keeps track of the books themselves, their titles, which books are in the catalog, etc.
+Our application is a management system for libraries. With it, you can easily manage books by dividing them into categories. 
+Users register and after that they have the opportunity to purchase a subscription to receive books. The system keeps track of users, 
+who took what books when and when to return. It also keeps track of the books themselves, their titles, which books are in the catalog, etc.
+
+Our project involved such things as Hystrix, Zuul, made Single Enter, added Security and completed the frontend
