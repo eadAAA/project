@@ -3,65 +3,187 @@
 <head>
     <meta charset="utf-8">
     <title>Pay</title>
-    <style>
-        /* Add a black background color to the top navigation */
-        .topnav {
-            background-color: #333;
-            overflow: hidden;
-        }
-
-        /* Style the links inside the navigation bar */
-        .topnav a {
-            float: left;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-        }
-
-        /* Change the color of links on hover */
-        .topnav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        /* Add a color to the active/current link */
-        .topnav a.active {
-            background-color: #04AA6D;
-            color: white;
-        }
-    </style>
+    <title>Profile</title>
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.css"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.js"
+    ></script>
 </head>
 <body>
-<div class="topnav">
-<table style="margin: auto">
-    <tr>
-        <td>
-            <a th:href="${toAuthorisation}" style="border: solid 1px blue; padding: 3px">Авторизация</a>
-            <a th:href="${toCatalog}" style="border: solid 1px blue; padding: 3px">Каталог</a>
-            <a th:href="${toProfile}" style="border: solid 1px blue; padding: 3px">Профиль</a>
-            <a th:href="${toPay}" style="border: solid 1px blue; padding: 3px">Оплата</a>
-            <a th:href="${toSubscription}" style="border: solid 1px blue; padding: 3px">Подписка</a>
-            <a th:href="${toPenalties}" style="border: solid 1px blue; padding: 3px">Штрафы</a>
-        </td>
-    </tr>
-</table>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="${toAuthorisation}">Авторизация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toCatalog}">Каталог</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toProfile}">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toPay}">Оплата</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toSubscription}">Подписка</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="${toPenalties}">Штрафы</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container py-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-4">
+            <div class="card rounded-3">
+                <div class="card-body mx-1 my-2">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <i class="fab fa-cc-visa fa-4x text-black pe-3"></i>
+                        </div>
+                        <div>
+                            <p class="d-flex flex-column mb-0">
+                                <b>Payment Method</b><span class="small text-muted">**** 8880</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pt-3">
+                        <div class="d-flex flex-row pb-3">
+                            <div
+                                    class="rounded border border-primary border-2 d-flex w-100 p-3 align-items-center"
+                                    style="background-color: rgba(18, 101, 241, 0.07);"
+                            >
+                                <div class="d-flex align-items-center pe-3">
+                                    <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioNoLabelX"
+                                            id="radioNoLabel11"
+                                            value=""
+                                            aria-label="..."
+                                            checked
+                                    />
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <p class="mb-1 small text-primary">Your Balance: </p>
+                                    <h6 class="mb-0 text-primary" th:text="${balance} + '$'"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<span>Баланс: </span>
-<span th:text="${balance}"/>
-<span> долларов</span>
-<div>Оплатить подписку:</div>
-<form action="paySubscription" method="post">
-    <input name="monthsNumber" type="text" placeholder="Количество месяцев">
-    <button type="submit">Оплатить подписку</button>
-</form>
-<div>Пополнить счёт:</div>
-<form action="topUpBalance" method="post">
-    <input name="cardNumber" type="text" placeholder="номер карты">
-    <input name="CVV" type="text" placeholder="CVV-код">
-    <input name="sum" type="text" placeholder="сумма">
-    <button type="submit">Пополнить счёт</button>
-</form>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-10 col-lg-8 col-xl-5">
+        <div class="card rounded-3">
+            <div class="card-body p-4">
+                <form action="paySubscription" method="post">
+                    <p class="fw-bold mb-4">Оплатить подписку:</p>
+
+                    <div class="form-outline mb-4">
+                        <input
+                                type="text"
+                                id="formControlLgXsd1"
+                                class="form-control form-control-lg"
+                                name="monthsNumber"
+                        />
+                        <label class="form-label" for="formControlLgXsd1">Количество месяцев</label>
+                    </div>
+                    <button class="btn btn-success btn-lg btn-block" type="submit">Подписаться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-10 col-lg-8 col-xl-5">
+        <div class="card rounded-3">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <h3>Settings</h3>
+                    <h6>Payment</h6>
+                </div>
+                <form action="topUpBalance" method="post">
+                    <p class="fw-bold mb-4">Пополнение счета:</p>
+
+                    <div class="form-outline mb-4">
+                        <input
+                                type="text"
+                                id="formControlLgXsd"
+                                class="form-control form-control-lg"
+                                name="sum"
+                        />
+                        <label class="form-label" for="formControlLgXsd">Amount</label>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-7">
+                            <div class="form-outline">
+                                <input
+                                        type="text"
+                                        id="formControlLgXM"
+                                        class="form-control form-control-lg"
+                                        name="cardNumber"
+                                />
+                                <label class="form-label" for="formControlLgXM">Card Number</label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-outline">
+                                <input
+                                        type="password"
+                                        id="formControlLgcvv"
+                                        class="form-control form-control-lg"
+                                        placeholder="Cvv"
+                                        name="CVV"
+                                />
+                                <label class="form-label" for="formControlLgcvv">CVV</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success btn-lg btn-block" type="submit">Пополнить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
